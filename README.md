@@ -88,3 +88,7 @@ flowchart LR
 
 The automated API suite injects an in-memory repository. Deployment still needs
 PostgreSQL, migrations and seed data; the tests do not validate a running container.
+
+## Author
+
+[**Muhammad Nadeem**](https://github.com/dev-mnadeem)
