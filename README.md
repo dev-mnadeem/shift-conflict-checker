@@ -17,7 +17,7 @@ This starts Postgres, runs the migrations and seed in a one-off `migrate` servic
 
 ## Running locally
 
-You'll need PostgreSQL and Node 18+.
+You'll need PostgreSQL and Node 22.12+.
 
 ```sh
 cp .env.example .env    # set DATABASE_URL
@@ -73,3 +73,18 @@ Neither suite needs a database. The API tests run against in-memory repositories
 - No authentication and no endpoints for creating or editing shifts.
 - Overlap is checked between two shifts at a time, not across a whole roster.
 - All seed data is made up.
+
+## Policy boundary
+
+```mermaid
+flowchart LR
+    Browser[React overlap form] --> Route[Overlap endpoint]
+    Route --> Service[ShiftService]
+    Service --> Repository[Shift repository]
+    Repository --> Postgres[(PostgreSQL)]
+    Service --> Policy{Configured overlap policy}
+    Policy --> Verdict[Minutes, allowance and verdict]
+```
+
+The automated API suite injects an in-memory repository. Deployment still needs
+PostgreSQL, migrations and seed data; the tests do not validate a running container.
